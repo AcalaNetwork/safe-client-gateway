@@ -33,7 +33,6 @@ pub mod transactions;
 #[doc(hidden)]
 pub fn active_routes() -> Vec<Route> {
     let no_openapi = routes![
-        root,
         // rocket_okapi don't support lifetimes
         // https://github.com/GREsau/okapi/issues/84
         contracts::routes::post_data_decoder,
@@ -48,7 +47,7 @@ pub fn active_routes() -> Vec<Route> {
         hooks::routes::post_hook_update,
         hooks::routes::post_hooks_events,
         hooks::routes::post_flush_events,
-        hooks::routes::flush
+        hooks::routes::flush,
     ];
 
     let openapi = openapi_get_routes![
@@ -61,6 +60,7 @@ pub fn active_routes() -> Vec<Route> {
         chains::routes::get_chain,
         chains::routes::get_chains,
         collectibles::routes::get_collectibles,
+        collectibles::routes::get_collectibles_paginated,
         contracts::routes::get_contract,
         delegates::routes::delete_delegate,
         delegates::routes::delete_safe_delegate,
@@ -102,10 +102,4 @@ fn panic() -> Value {
         "status": "error",
         "reason": "Server error occurred."
     })
-}
-
-#[doc(hidden)]
-#[get("/")]
-pub fn root() -> Redirect {
-    Redirect::temporary("https://safe.global/safe-client-gateway/")
 }
